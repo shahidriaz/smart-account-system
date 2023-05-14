@@ -1,7 +1,7 @@
 import express,{  Application, Request, Response, Router } from 'express';
 import dotenv from 'dotenv'
-import { GetAll, GetById, UpdateAccountCharts, CreateAccountChart, DeleteAccountChart } from './service/accountsCharts';
-import { accountscharts } from '@prisma/client';
+
+import { accounting, accountscharts } from '@prisma/client';
 dotenv.config();
 
 const app: Application = express();
@@ -9,6 +9,7 @@ const port = process.env.PORT;
 const router = Router();
 
 //#region Accounts Charts Endpoints
+import { GetAll, GetById, UpdateAccountCharts, CreateAccountChart, DeleteAccountChart } from './service/accountsCharts';
 router.route("/accountsChart").get((req: Request, res: Response) => {
     GetAll().then(data=>{
         return res.send(data);
@@ -39,6 +40,43 @@ router.route("/accountsChart/:id").delete((req: Request, res: Response) => {
     let accountsChartsId : number;
     accountsChartsId = parseInt(req.params.id);
     DeleteAccountChart(accountsChartsId).then(data=>{
+        return res.send(data);
+    });
+});
+//#endregion
+
+//#region Accounts Charts Endpoints
+import {GetAllTransactions,GetTransactionById, UpdateTransaction, CreateTransaction, DeleteTransaction} from './service/transactionsService';
+router.route("/transactions").get((req: Request, res: Response) => {
+    GetAllTransactions().then(data=>{
+        return res.send(data);
+    });
+});
+router.route("/transactions/:id").get((req: Request, res: Response) => {
+    let transactionid : number;
+    transactionid = parseInt(req.params.id);
+    GetTransactionById(transactionid).then(data=>{
+        return res.send(data);
+    });
+});
+router.route("/transactions/:id").put((req: Request, res: Response) => {
+    let transactionid : number;
+    let modifiedTransaction: accounting = req.body.accounting as accounting;
+    transactionid = parseInt(req.params.id);
+    UpdateTransaction(transactionid, modifiedTransaction).then(data=>{
+        return res.send(data);
+    });
+});
+router.route("/transactions").post((req: Request, res: Response) => {
+    let newTransaction: accounting = req.body.accounting as accounting;
+    CreateTransaction(newTransaction).then(data=>{
+        return res.send(data);
+    });
+});
+router.route("/transactions/:id").delete((req: Request, res: Response) => {
+    let transactionid : number;
+    transactionid = parseInt(req.params.id);
+    DeleteTransaction(transactionid).then(data=>{
         return res.send(data);
     });
 });
