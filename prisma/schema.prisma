@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model accounting {
+  transactionid    Int     @id(map: "accounts_pk") @default(autoincrement())
+  Transaction_No   Int?    @map("Transaction No")
+  Transaction_Date String? @map("Transaction Date") @db.VarChar(50)
+  accountid        Int?
+  debit            Int?
+  credit           Int?
+  narration        String? @db.VarChar(50)
+
+  @@ignore
+}
+
+model accountscharts {
+  accountid    Int     @id(map: "account_type_pk") @default(autoincrement())
+  accountname  String? @db.VarChar(50)
+  Account_Type String? @map("Account Type") @db.VarChar(50)
+}

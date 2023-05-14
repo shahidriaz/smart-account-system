@@ -1,0 +1,29 @@
+-- public.accounting definition
+
+-- Drop table
+
+-- DROP TABLE public.accounting;
+
+CREATE TABLE public.accounting (
+	transactionid int4 NOT NULL,
+	"Transaction No" int4 NULL,
+	"Transaction Date" varchar(50) NULL,
+	accountid int4 NULL,
+	debit int4 NULL,
+	credit int4 NULL,
+	narration varchar(50) NULL,
+	CONSTRAINT accounts_pk PRIMARY KEY (transactionid)
+);
+
+
+-- public.accountscharts definition
+
+-- Drop table
+
+-- DROP TABLE public.accountscharts;
+
+CREATE TABLE public.accountscharts (
+	accountid int4 NOT NULL,
+	accountname varchar(50) NULL,
+	"Account Type" varchar(50) NULL
+);
